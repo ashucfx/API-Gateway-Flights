@@ -30,7 +30,48 @@ Authorization check for adding roles to enhance security.
 ## Installation
 - Clone the repository: `git clone https://github.com/git-ashutosh571/API-Gateway-Flights.git`
 - Install dependencies: `npm install`
+- Configure environment variables (see below)
 - Start the server: `npm start` or `npm run dev`
+
+## Environment Configuration
+
+This service requires environment variables to be configured. Copy `.env.example` to `.env` and update the values:
+
+```bash
+cp .env.example .env
+```
+
+### Required Environment Variables
+
+**Server Configuration:**
+- `PORT` - Server port (default: 8000)
+- `NODE_ENV` - Environment (development/production)
+- `CORS_ORIGIN` - Allowed CORS origins (default: *)
+
+**Database Configuration:**
+- `DB_HOST` - Database host address
+- `DB_PORT` - Database port (default: 3306)
+- `DB_USER` - Database username
+- `DB_PASSWORD` - Database password
+- `DB_NAME` - Database name (api_gateway)
+- `DB_DIALECT` - Database dialect (mysql)
+
+**JWT Configuration:**
+- `JWT_SECRET` - Secret key for JWT signing (MUST be changed in production)
+- `JWT_EXPIRY` - Token expiration time (e.g., '1d', '7d')
+- `SALT_ROUNDS` - Bcrypt salt rounds (default: 10)
+
+**Microservices URLs:**
+- `FLIGHT_SERVICE` - Flights Service URL (e.g., http://localhost:3000)
+- `BOOKING_SERVICE` - Booking Service URL (e.g., http://localhost:3001)
+
+**Rate Limiting:**
+- `RATE_LIMIT_WINDOW_MS` - Time window in milliseconds (default: 900000 = 15 min)
+- `RATE_LIMIT_MAX_REQUESTS` - Max requests per window (default: 100)
+
+### Health Check
+
+The service provides a health check endpoint at `/health` for monitoring and orchestration purposes.
 
 ## Usage
 - To use the API Gateway Service, you can make requests to the API endpoints provided in the documentation.
