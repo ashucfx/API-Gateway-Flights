@@ -12,7 +12,6 @@ async function createUser(data) {
         user.addRole(role);
         return user;
     } catch(error) {
-        console.log(error.name);
         if(error.name == 'SequelizeValidationError' || error.name == 'SequelizeUniqueConstraintError') {
             let explanation = [];
             error.errors.forEach((err) => {
@@ -31,7 +30,6 @@ async function signIn(data) {
             throw new AppError('No user found for the given email', StatusCodes.NOT_FOUND);
         }
         const passwordMatch = auth.checkPassword(data.password, user.password);
-        console.log("password match", passwordMatch)
         if(!passwordMatch) {
             throw new AppError('Invalid password', StatusCodes.BAD_REQUEST);
         }
@@ -39,7 +37,6 @@ async function signIn(data) {
         return jwt;
     } catch(error) {
         if(error instanceof AppError) throw error;
-        console.log(error);
         throw new AppError('Something went wrong', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
@@ -63,7 +60,6 @@ async function isAuthenticated(token) {
         if(error.name == 'TokenExpiredError') {
             throw new AppError('JWT token expired', StatusCodes.BAD_REQUEST);
         }
-        console.log(error);
         throw new AppError('Something went wrong', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
@@ -82,7 +78,6 @@ async function addRoletoUser(data) {
         return user;
     } catch(error) {
         if(error instanceof AppError) throw error;
-        console.log(error);
         throw new AppError('Something went wrong', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
@@ -100,7 +95,6 @@ async function isAdmin(id) {
         return user.hasRole(adminrole);
     } catch(error) {
         if(error instanceof AppError) throw error;
-        console.log(error);
         throw new AppError('Something went wrong', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
