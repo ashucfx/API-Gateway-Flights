@@ -15,10 +15,16 @@ const limiter = rateLimit({
 
 const app = express();
 
-// CORS configuration
+// CORS configuration - only allow specified origins
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',')
+  : ['http://localhost:3000', 'http://localhost:3002', 'http://frontend:3000'];
+
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || '*',
-    credentials: true
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
