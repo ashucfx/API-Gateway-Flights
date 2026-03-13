@@ -27,22 +27,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'Service is healthy',
-    timestamp: new Date().toISOString(),
-    service: 'API Gateway',
-    uptime: process.uptime()
-  });
-});
-
-app.use('/api', apiRoutes);
 
 app.use(
   '/flightsService',
@@ -60,9 +45,25 @@ app.use(
   }),
 );
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Service is healthy',
+    timestamp: new Date().toISOString(),
+    service: 'API Gateway',
+    uptime: process.uptime()
+  });
+});
+
+app.use('/api', apiRoutes);
+
 // Centralized error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Unhandled Exception:', err);
+  Logger.error('Unhandled Exception', 'error-middleware', err);
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
